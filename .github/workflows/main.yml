@@ -13,25 +13,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Create .env file
-        run: |
-          echo "MONGO_LOCAL_URL=${{ secrets.MONGO_LOCAL_URL }}" >> .env
-          echo "REDIS_LOCAL_URL=${{ secrets.REDIS_LOCAL_URL }}" >> .env
-          echo "JWT_SECRET_LOCAL=${{ secrets.JWT_SECRET_LOCAL }}" >> .env
-          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
-          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
-          echo "FACEBOOK_CLIENT_ID=${{ secrets.FACEBOOK_CLIENT_ID }}" >> .env
-          echo "FACEBOOK_CLIENT_SECRET=${{ secrets.FACEBOOK_CLIENT_SECRET }}" >> .env
-          echo "NODEMAILER_USER=${{ secrets.NODEMAILER_USER }}" >> .env
-          echo "NODEMAILER_PASS=${{ secrets.NODEMAILER_PASS }}" >> .env
-          echo "CLOUDINARY_NAME=${{ secrets.CLOUDINARY_NAME }}" >> .env
-          echo "CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}" >> .env
-          echo "CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}" >> .env
-          echo "API_KEY_30diem=${{ secrets.API_KEY_30diem }}" >> .env
-          echo "API_KEY_hauhpll123=${{ secrets.API_KEY_hauhpll123 }}" >> .env
-          echo "API_KEY_hauhpll123paid=${{ secrets.API_KEY_hauhpll123paid }}" >> .env
-          echo "GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" >> .env
-          echo "CLIENT_ORIGIN=https://toeic-journey.vercel.app" >> .env
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -52,6 +33,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Deploy to GCP VM
         uses: appleboy/ssh-action@v1.2.0
