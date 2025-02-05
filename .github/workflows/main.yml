@@ -1,1 +1,66 @@
+name: CI/CD
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create .env file
+        run: |
+          echo "MONGO_LOCAL_URL=${{ secrets.MONGO_LOCAL_URL }}" >> .env
+          echo "REDIS_LOCAL_URL=${{ secrets.REDIS_LOCAL_URL }}" >> .env
+          echo "JWT_SECRET_LOCAL=${{ secrets.JWT_SECRET_LOCAL }}" >> .env
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+          echo "FACEBOOK_CLIENT_ID=${{ secrets.FACEBOOK_CLIENT_ID }}" >> .env
+          echo "FACEBOOK_CLIENT_SECRET=${{ secrets.FACEBOOK_CLIENT_SECRET }}" >> .env
+          echo "NODEMAILER_USER=${{ secrets.NODEMAILER_USER }}" >> .env
+          echo "NODEMAILER_PASS=${{ secrets.NODEMAILER_PASS }}" >> .env
+          echo "CLOUDINARY_NAME=${{ secrets.CLOUDINARY_NAME }}" >> .env
+          echo "CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}" >> .env
+          echo "CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}" >> .env
+          echo "API_KEY_30diem=${{ secrets.API_KEY_30diem }}" >> .env
+          echo "API_KEY_hauhpll123=${{ secrets.API_KEY_hauhpll123 }}" >> .env
+          echo "API_KEY_hauhpll123paid=${{ secrets.API_KEY_hauhpll123paid }}" >> .env
+          echo "GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" >> .env
+          echo "CLIENT_ORIGIN=https://toeic-journey.vercel.app" >> .env
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and push backend
+        uses: docker/build-push-action@v2
+        with:
+          context: ./server
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/backend_toeic:latest
+      - name: Push nginx
+        uses: docker/build-push-action@v2
+        with:
+          context: ./nginx
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/nginx:latest
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v4
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          script: |
+            cd /home/ubuntu/toeic
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d
 
