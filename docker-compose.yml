@@ -1,6 +1,6 @@
 services:
   server:
-    image: backend_toeic
+    image: mar1836/backend_toeic:latest
     container_name: backend_toeic
     build:
       context: ./server
@@ -17,7 +17,7 @@ services:
       - ./uploads:/app/src/uploads
     restart: always
   nginx:
-    image: nginx:latest
+    image: mar1836/nginx:latest
     ports:
       - "80:80"
     volumes:
