@@ -1,6 +1,7 @@
 services:
   server:
     image: mars1836/backend_toeic:latest
+    container_name: backend_toeic
     ports:
       - "4000:4000"
     env_file:
