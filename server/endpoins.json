@@ -1,0 +1,630 @@
+[
+  {
+    "path": "/api/user/auth/login",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/auth/signup",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/auth/local-signup-cache",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/auth/google-login",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/auth/google-login/callback",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/auth/facebook-login",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/auth/facebook-login/callback",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/auth/login/failed",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/auth/getinfor",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/auth/logout",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/auth/current-user",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/auth/otp/reset-password",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/auth/request/reset-password",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/auth/otp/verify-email",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/auth/request/verify-email",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/flashcard",
+    "methods": [
+      "POST",
+      "DELETE",
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/user/flashcard/many",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/flashcard/set",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/set-flashcard",
+    "methods": [
+      "POST",
+      "DELETE",
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/user/set-flashcard/id",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/set-flashcard/user",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/set-flashcard/public",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/result/items",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/result",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/result/test",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/result/user",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/result/id",
+    "methods": [
+      "GET",
+      "DELETE"
+    ]
+  },
+  {
+    "path": "/api/user/result-item/part",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/result-item/user",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/result-item/result",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/test",
+    "methods": [
+      "POST",
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/payment",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/payment/status",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/ai-chat/get-explanation/json",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/ai-chat/get-quizz/json",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/ai-chat/get-fc-infor/json",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/ai-chat/get-fc-infor",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/ai-chat/get-quizz",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/ai-chat/get-explanation",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/ai-chat/suggest-for-study",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/learning-set",
+    "methods": [
+      "POST",
+      "DELETE"
+    ]
+  },
+  {
+    "path": "/api/user/learning-set/user",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/learning-set/set",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/learning-set/id",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/learning-flashcard/set",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/learning-flashcard/update-short-term-score",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/learning-flashcard/update-session-score",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/profile/update-avatar",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/profile/update-profile",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/profile/analysis",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/profile/update-target-score",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/profile/recommend",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/provider/speech-to-text",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/admin/auth/login",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/admin/auth/login/failed",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/auth/getinfor",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/auth/signup",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/admin/auth/current-user",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/auth/logout",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/admin/transaction/last-7-months",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/transaction/last-7-days",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/transaction/last-7-years",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/transaction/analyst/new",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/transaction",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/transaction/analyst/progress",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/transaction/status",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/transaction/update-status",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/admin/blog",
+    "methods": [
+      "POST",
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/blog/:id",
+    "methods": [
+      "GET",
+      "PUT",
+      "DELETE"
+    ]
+  },
+  {
+    "path": "/api/admin/blog/upload-image",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/admin/analysis/new-user",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/analysis/exam-attempt",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/analysis/income",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/user",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/user/upgrade",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/user/analyst/new",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/user/analyst/upgrade",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/user/analyst/progress",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/test",
+    "methods": [
+      "POST",
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/test/:id",
+    "methods": [
+      "GET",
+      "DELETE"
+    ]
+  },
+  {
+    "path": "/api/admin/test/:id/infor",
+    "methods": [
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/admin/test/:id/data",
+    "methods": [
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/admin/result/analyst/new",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/result/analyst/progress",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/cloudinary/upload-image",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/pub/test",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/pub/test/handle-excel",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/pub/test/code",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/pub/test/id",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/pub/test/all",
+    "methods": [
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/pub/payment/callback",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/pub/upload",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/pub/word/4-random",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/pub/word/many",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/pub/blog",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/pub/blog/search",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/pub/blog/:id",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/pub/blog/:id/view",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/pub/blog/:id/related",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/pub/transcript-test",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/pub/transcript-test-item",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/pub/transcript-test-item/transcript-test-id",
+    "methods": [
+      "GET"
+    ]
+  }
+]

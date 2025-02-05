@@ -1,0 +1,42 @@
+# Node.js / Frontend
+node_modules/
+.npm/
+dist/
+.build/
+.nuxt/
+.next/
+.cache/
+tmp/
+*.log
+
+# Static files nặng
+**/uploads
+*.mp3
+*.wav
+*.mp4
+**/google_service_codelife_key.json
+
+# Git
+.git/
+.gitignore
+
+# Env files
+.env
+.env.*
+
+# IDE và hệ điều hành
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Nhạy cảm / không cần thiết
+secrets/
+*.bak
+*.swp
+*.tmp
