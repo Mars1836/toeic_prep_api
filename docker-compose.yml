@@ -1,9 +1,6 @@
 services:
   server:
-    image: mar1836/backend_toeic:latest
-    container_name: backend_toeic
-    build:
-      context: ./server
+    image: mars1836/backend_toeic:latest
     ports:
       - "4000:4000"
     env_file:
@@ -17,7 +14,7 @@ services:
       - ./uploads:/app/src/uploads
     restart: always
   nginx:
-    image: mar1836/nginx:latest
+    image: mars1836/nginx:latest
     ports:
       - "80:80"
     depends_on:
