@@ -89,6 +89,6 @@ jobs:
             cd deploy_package
             sudo docker-compose pull
             sudo docker-compose down
-            sudo docker-compose run --rm certbot certonly --webroot -w /var/www/html -d ftp.codelife138.io.vn --email hauhpll123@gmail.com --agree-tos --no-eff-email --force-renewal
+            sudo docker-compose run -d --rm certbot certonly --webroot -w /var/www/html -d ftp.codelife138.io.vn --email hauhpll123@gmail.com --agree-tos --no-eff-email --force-renewal
             sudo docker-compose up -d
             sudo docker image prune -f
