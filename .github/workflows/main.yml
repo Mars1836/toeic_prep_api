@@ -72,9 +72,11 @@ jobs:
           username: ${{ secrets.GCP_SSH_USER }}
           key: ${{ secrets.GCP_SSH_KEY }}
           source: deploy_package.tar.gz
-          target: "/tmp/"
+          target: "/home/hauhpll123/tmp/"
+          debug: true
       - name: Deploy to GCP VM
         uses: appleboy/ssh-action@v1.2.0
+
         with:
           host: ${{ secrets.GCP_SSH_HOST }}
           username: ${{ secrets.GCP_SSH_USER }}
@@ -82,11 +84,10 @@ jobs:
           script: |
             mkdir -p /home/hauhpll123/deploy_package
             cd /home/hauhpll123
-            tar -xzvf /tmp/deploy_package.tar.gz 
-            rm -rf /tmp/deploy_package.tar.gz
+            tar -xzvf /home/hauhpll123/tmp/deploy_package.tar.gz 
+            rm -rf /home/hauhpll123/tmp/deploy_package.tar.gz
             cd deploy_package
             sudo docker-compose pull
             sudo docker-compose down
-
             sudo docker-compose run --rm certbot certonly --webroot -w /var/www/html -d ftp.codelife138.io.vn --email hauhpll123@gmail.com --agree-tos --no-eff-email --force-renewal
             sudo docker-compose up -d
