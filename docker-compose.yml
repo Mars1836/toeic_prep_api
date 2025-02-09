@@ -13,9 +13,11 @@ services:
       - ./keys:/app/keys
       - ./env:/app/.env
       - ./uploads:/app/src/uploads
+      - ./uploads:/app/dist/uploads
     restart: always
     networks:
       - toeic_network
+
   redis:
     image: redis:alpine
     ports:
