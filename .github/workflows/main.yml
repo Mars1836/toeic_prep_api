@@ -24,12 +24,6 @@ jobs:
           context: ./server
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/backend_toeic:latest
-      - name: Push nginx
-        uses: docker/build-push-action@v2
-        with:
-          context: ./nginx
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/nginx:latest
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -60,7 +54,6 @@ jobs:
         run: |
           mkdir -p deploy_package
           cp -r uploads deploy_package/
-          cp -r nginx deploy_package/
           cp docker-compose.yml deploy_package/
           cp init-mongo.sh deploy_package/
           cp .env deploy_package/
@@ -89,6 +82,5 @@ jobs:
             cd deploy_package
             sudo docker-compose pull
             sudo docker-compose down
-            sudo docker-compose run -d --rm certbot certonly --webroot -w /var/www/html -d ftp.codelife138.io.vn --email hauhpll123@gmail.com --agree-tos --no-eff-email --force-renewal
             sudo docker-compose up -d
             sudo docker image prune -f

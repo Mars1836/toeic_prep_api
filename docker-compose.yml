@@ -14,35 +14,21 @@ services:
       - ./env:/app/.env
       - ./uploads:/app/src/uploads
     restart: always
-  nginx:
-    image: mars1836/nginx:latest
-    ports:
-      - "80:80"
-    depends_on:
-      - server
-    volumes:
-      - ./nginx/ssl:/etc/letsencrypt
-      - ./nginx/www:/var/www/html
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    volumes:
-      - ./nginx/ssl:/etc/letsencrypt
-      - ./nginx/www:/var/www/html
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 6h & wait $${!}; certbot renew; done'"
+    networks:
+      - toeic_network
   redis:
     image: redis:alpine
-
     ports:
       - "6379:6379"
     restart: always
     volumes:
       - redis_data:/data
+    networks:
+      - toeic_network
 
   mongo:
     image: mongo
+
     ports:
       - "27017:27017"
     restart: always
@@ -50,6 +36,11 @@ services:
       - mongo_data:/data/db
       - ./backup:/backup
       - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
+    networks:
+      - toeic_network
 volumes:
   mongo_data:
   redis_data:
+networks:
+  toeic_network:
+    driver: bridge
