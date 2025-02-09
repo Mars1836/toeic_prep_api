@@ -5,13 +5,7 @@ interface UserPayload {
   id: string;
   email: string;
 }
-declare global {
-  namespace Express {
-    interface Request {
-      user?: UserPayload;
-    }
-  }
-}
+
 export async function verifyUser(
   req: Request,
   res: Response,

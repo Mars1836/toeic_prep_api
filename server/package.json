@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test:local": "cross-env RUN_MODE=local jest --watchAll --no-cache",
-    "start": "cross-env APP_ENV=prod ENV_FILE=.env.prod ts-node-dev src/index.ts",
+    "start": "cross-env APP_ENV=prod ENV_FILE=.env.prod node dist/index.js",
     "dev": "cross-env APP_ENV=dev ENV_FILE=.env.dev ts-node-dev src/index.ts",
-    "start:docker": "cross-env APP_ENV=docker ENV_FILE=.env ts-node-dev src/index.ts",
+    "start:docker": "cross-env APP_ENV=docker ENV_FILE=.env node dist/index.js",
     "build": "tsc",
     "build:docker": "docker build -t mars1836/server-toeic:latest . && docker push mars1836/server-toeic:latest"
   },
