@@ -34,7 +34,7 @@ services:
     restart: always
     volumes:
       - mongo_data:/data/db
-      - ./backup:/backup
+      - ./backup1:/backup1
       - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
     networks:
       - toeic_network

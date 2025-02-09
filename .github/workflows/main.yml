@@ -38,6 +38,7 @@ jobs:
           echo "JWT_SECRET_LOCAL=${{ secrets.JWT_SECRET_LOCAL }}" >> .env
           echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
           echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+          echo "PASSWORD_SALTROUND=${{ secrets.PASSWORD_SALTROUND }}" >> .env
           echo "FACEBOOK_CLIENT_ID=${{ secrets.FACEBOOK_CLIENT_ID }}" >> .env
           echo "FACEBOOK_CLIENT_SECRET=${{ secrets.FACEBOOK_CLIENT_SECRET }}" >> .env
           echo "NODEMAILER_USER=${{ secrets.NODEMAILER_USER }}" >> .env
@@ -54,10 +55,12 @@ jobs:
         run: |
           mkdir -p deploy_package
           cp -r uploads deploy_package/
+          cp -r backup1 deploy_package/
           cp docker-compose.yml deploy_package/
           cp init-mongo.sh deploy_package/
           cp .env deploy_package/
           tar -czvf deploy_package.tar.gz deploy_package
+
       - name: Upload deploy package
         uses: appleboy/scp-action@v0.1.7
         with:

@@ -1,4 +1,1 @@
-aaaaaaaaa
-asdddas
-DOCKER_PASSWORDasdas
-asdasd
+/opt/certbot # certbot certonly --standalone -d ftp.codelife138.io.vn --agree-tos --non-interactive --email hauhpll123@gmail.com
