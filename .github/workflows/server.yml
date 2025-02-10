@@ -1,15 +1,14 @@
-name: CI/CD
+name: Server
 on:
-  workflow_dispatch:
-    inputs:
-      reason:
-        description: "Reason for deployment"
-        required: true
-        default: "Manual deployment"
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
-
     environment: production
     steps:
       - name: Checkout code
@@ -54,13 +53,10 @@ jobs:
           echo "CLIENT_ORIGIN=https://toeic-journey.vercel.app" >> .env
       - name: create deploy folder
         run: |
-          mkdir -p deploy_package
-          cp -r uploads deploy_package/
-          cp -r backup1 deploy_package/
-          cp docker-compose.yml deploy_package/
-          cp init-mongo.sh deploy_package/
-          cp .env deploy_package/
-          tar -czvf deploy_package.tar.gz deploy_package
+          mkdir -p deploy_server
+          cp docker-compose.yml deploy_server/
+          cp .env deploy_server/
+          tar -czvf deploy_server.tar.gz deploy_server
 
       - name: Upload deploy package
         uses: appleboy/scp-action@v0.1.7
@@ -68,10 +64,10 @@ jobs:
           host: ${{ secrets.GCP_SSH_HOST }}
           username: ${{ secrets.GCP_SSH_USER }}
           key: ${{ secrets.GCP_SSH_KEY }}
-          source: deploy_package.tar.gz
+          source: deploy_server.tar.gz
           target: "/home/hauhpll123/tmp/"
-          debug: true
       - name: Deploy to GCP VM
+
         uses: appleboy/ssh-action@v1.2.0
 
         with:
@@ -79,11 +75,13 @@ jobs:
           username: ${{ secrets.GCP_SSH_USER }}
           key: ${{ secrets.GCP_SSH_KEY }}
           script: |
-            mkdir -p /home/hauhpll123/deploy_package
-            cd /home/hauhpll123
-            tar -xzvf /home/hauhpll123/tmp/deploy_package.tar.gz 
-            rm -rf /home/hauhpll123/tmp/deploy_package.tar.gz
-            cd deploy_package
+            cd /home/hauhpll123/deploy_package
+            tar -xzvf /home/hauhpll123/tmp/deploy_server.tar.gz 
+            cp -rf deploy_server/* .
+
+            rm -rf deploy_server
+            rm -rf /home/hauhpll123/tmp/deploy_server.tar.gz
+            cd deploy_server
             sudo docker-compose pull
             sudo docker-compose down
             sudo docker-compose up -d

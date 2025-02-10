@@ -9,6 +9,8 @@ services:
     depends_on:
       - redis
       - mongo
+    environment:
+      - AUTH_SECRET=toeic-journey
     volumes:
       - ./keys:/app/keys
       - ./env:/app/.env
@@ -30,7 +32,6 @@ services:
 
   mongo:
     image: mongo
-
     ports:
       - "27017:27017"
     restart: always
