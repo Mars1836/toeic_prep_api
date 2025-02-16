@@ -6,6 +6,12 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Reason for deployment"
+        required: true
+        default: "Manual deployment"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -78,11 +84,8 @@ jobs:
             cd /home/hauhpll123/deploy_package
             tar -xzvf /home/hauhpll123/tmp/deploy_server.tar.gz 
             cp -rf deploy_server/* .
-
             rm -rf deploy_server
             rm -rf /home/hauhpll123/tmp/deploy_server.tar.gz
             cd deploy_server
-            sudo docker-compose pull
-            sudo docker-compose down
-            sudo docker-compose up -d
+            sudo docker-compose up --pull=always --force-recreate --remove-orphans -d server
             sudo docker image prune -f
