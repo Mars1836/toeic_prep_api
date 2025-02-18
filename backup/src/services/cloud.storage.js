@@ -1,5 +1,6 @@
 import { Storage } from "@google-cloud/storage";
 import fs from "fs";
+import path from "path";
 const gcpConfig = {
   mongoUri: process.env.MONGO_URI,
   backupPath: process.env.BACKUP_PATH,
@@ -22,6 +23,17 @@ class CloudStorage {
   }
 
   async uploadFile(filePath, destPath) {
+    console.log("Uploading file:", filePath);
+
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`File not found: ${filePath}`);
+    }
+
+    const stats = fs.statSync(filePath);
+    if (!stats.isFile()) {
+      throw new Error(`Not a valid file: ${filePath}`);
+    }
+
     const file = this.bucket.file(destPath);
     await new Promise((resolve, reject) => {
       fs.createReadStream(filePath)
@@ -29,6 +41,8 @@ class CloudStorage {
         .on("error", reject)
         .on("finish", resolve);
     });
+
+    console.log("Upload complete:", destPath);
   }
 }
 

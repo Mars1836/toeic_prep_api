@@ -121,24 +121,132 @@ namespace ResultSrv {
     await ResultItemRepo.deleteMany(data.id);
     return rs;
   }
-  export async function getNewResultAnalyst(step: number, num: number) {
+  export async function getNewResultAnalyst_(step: number, num: number) {
     // Lấy ngày hiện tại
+    let dv: "d" | "w" | "m" | "y" = "d";
+    if (step === 1) {
+      dv = "d";
+    } else if (step === 7) {
+      dv = "w";
+    } else if (step === 30) {
+      dv = "m";
+    } else if (step === 365) {
+      dv = "y";
+    }
+    const now = new Date();
+    // Tính ngày bắt đầu
+    let startDate = new Date();
+    let filterGroup = {};
+    if (dv === "m") {
+      startDate.setMonth(now.getMonth() - num);
+      filterGroup = {
+        month: { $month: "$createdAt" },
+        year: { $year: "$createdAt" },
+      };
+    }
+    if (dv === "y") {
+      startDate.setFullYear(now.getFullYear() - num);
+      filterGroup = {
+        year: { $year: "$createdAt" },
+      };
+    }
+    if (dv === "d") {
+      startDate.setDate(now.getDate() - num);
+
+      filterGroup = {
+        day: { $dayOfMonth: "$createdAt" },
+        month: { $month: "$createdAt" },
+        year: { $year: "$createdAt" },
+      };
+    }
+    const allInRange = [];
+    let currentDate = new Date(startDate);
+    while (currentDate <= now) {
+      if (dv === "d") {
+        allInRange.push({
+          day: currentDate.getDate(),
+          month: currentDate.getMonth() + 1,
+          year: currentDate.getFullYear(),
+        });
+        currentDate.setDate(currentDate.getDate() + 1);
+      } else if (dv === "m") {
+        allInRange.push({
+          month: currentDate.getMonth() + 1,
+          year: currentDate.getFullYear(),
+        });
+        currentDate.setMonth(currentDate.getMonth() + 1);
+      } else if (dv === "y") {
+        allInRange.push({
+          year: currentDate.getFullYear(),
+        });
+        currentDate.setFullYear(currentDate.getFullYear() + 1);
+      }
+    }
+
+    const actualData = await resultModel.aggregate([
+      {
+        // Lọc các user được tạo từ startDate
+        $match: {
+          createdAt: { $gte: startDate, $lte: now },
+        },
+      },
+
+      {
+        // Nhóm theo period
+        $group: {
+          _id: filterGroup,
+          count: { $sum: 1 },
+        },
+      },
+
+      // Sắp xếp theo thời gian
+      { $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 } },
+    ]);
+    const dataMap: { [key: string]: number } = {};
+    actualData.forEach((item) => {
+      let key = "";
+      if (dv === "d") {
+        key = `${item._id.year}-${item._id.month}-${item._id.day}`;
+      } else if (dv === "m") {
+        key = `${item._id.year}-${item._id.month}`;
+      } else if (dv === "y") {
+        key = `${item._id.year}`;
+      }
+      dataMap[key] = item.count;
+    });
+
+    // Tạo kết quả cuối cùng với đầy đủ các tháng
+    const result = allInRange.map((period) => {
+      let key = "";
+      if (dv === "d") {
+        key = `${period.year}-${period.month}-${period.day}`;
+      } else if (dv === "m") {
+        key = `${period.year}-${period.month}`;
+      } else if (dv === "y") {
+        key = `${period.year}`;
+      }
+      return {
+        _id: period,
+        count: dataMap[key] || 0, // Nếu không có dữ liệu, count = 0
+      };
+    });
+
+    return result;
+  }
+  export async function getNewResultAnalyst(step: number, num: number) {
     const currentDate = new Date();
 
-    // Tính ngày bắt đầu
     const startDate = new Date(currentDate);
     startDate.setDate(currentDate.getDate() - step * num);
     const periodStart = getStartOfPeriod(startDate, step);
 
     const result = await resultModel.aggregate([
       {
-        // Lọc các transaction từ startDate
         $match: {
           createdAt: { $gte: periodStart },
         },
       },
       {
-        // Thêm trường period để nhóm
         $addFields: {
           periodStart: {
             $subtract: [
@@ -154,21 +262,18 @@ namespace ResultSrv {
         },
       },
       {
-        // Nhóm theo period và tính tổng amount
         $group: {
           _id: "$periodStart",
           count: { $sum: 1 },
         },
       },
       {
-        // Sắp xếp theo thời gian
         $sort: {
           _id: 1,
         },
       },
     ]);
 
-    // Format lại kết quả và tính growth rate
     const formattedResult = [];
     let currentPeriod = new Date(periodStart);
     let previousAmount = null;
@@ -177,14 +282,12 @@ namespace ResultSrv {
       const periodEnd = new Date(currentPeriod);
       periodEnd.setDate(periodEnd.getDate() + step - 1);
 
-      // Tìm data tương ứng trong result
       const periodData = result.find(
         (item) => item._id.getTime() === currentPeriod.getTime()
       );
 
       const currentCount = periodData ? periodData.count : 0;
 
-      // Tính growth rate
       let growthRate = null;
       if (previousAmount !== null && previousAmount !== 0) {
         growthRate = ((currentCount - previousAmount) / previousAmount) * 100;
@@ -200,14 +303,12 @@ namespace ResultSrv {
         endDate: periodEnd.toISOString(),
         totalAmount: currentCount,
         count: periodData ? periodData.count : 0,
-        growthRate: growthRate !== null ? Number(growthRate.toFixed(2)) : null, // Làm tròn đến 2 chữ số thập phân
-        previousAmount: previousAmount, // Optional, có thể bỏ nếu không cần
+        growthRate: growthRate !== null ? Number(growthRate.toFixed(2)) : null,
+        previousAmount: previousAmount,
       });
 
-      // Lưu lại amount hiện tại để tính growth rate cho period tiếp theo
       previousAmount = currentCount;
 
-      // Chuyển sang period tiếp theo
       currentPeriod.setDate(currentPeriod.getDate() + step);
     }
 

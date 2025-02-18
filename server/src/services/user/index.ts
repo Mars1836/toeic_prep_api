@@ -97,9 +97,131 @@ export async function getTotalUserAnalyst() {
   const totalUser = await userModel.countDocuments();
   return totalUser;
 }
+export async function getNewUserAnalyst_(step: number, num: number) {
+  // Lấy ngày hiện tại
+  let dv: "d" | "w" | "m" | "y" = "d";
+  if (step === 1) {
+    dv = "d";
+  } else if (step === 7) {
+    dv = "w";
+  } else if (step === 30) {
+    dv = "m";
+  } else if (step === 365) {
+    dv = "y";
+  }
+  const now = new Date();
+  // Tính ngày bắt đầu
+  let startDate = new Date();
+  let filterGroup = {};
+  if (dv === "m") {
+    startDate.setMonth(now.getMonth() - num);
+    filterGroup = {
+      month: { $month: "$createdAt" },
+      year: { $year: "$createdAt" },
+    };
+  }
+  if (dv === "y") {
+    startDate.setFullYear(now.getFullYear() - num);
+    filterGroup = {
+      year: { $year: "$createdAt" },
+    };
+  }
+  if (dv === "d") {
+    startDate.setDate(now.getDate() - num);
+
+    filterGroup = {
+      day: { $dayOfMonth: "$createdAt" },
+      month: { $month: "$createdAt" },
+      year: { $year: "$createdAt" },
+    };
+  }
+  const allInRange = [];
+  let currentDate = new Date(startDate);
+  while (currentDate <= now) {
+    if (dv === "d") {
+      allInRange.push({
+        day: currentDate.getDate(),
+        month: currentDate.getMonth() + 1,
+        year: currentDate.getFullYear(),
+      });
+      currentDate.setDate(currentDate.getDate() + 1);
+    } else if (dv === "m") {
+      allInRange.push({
+        month: currentDate.getMonth() + 1,
+        year: currentDate.getFullYear(),
+      });
+      currentDate.setMonth(currentDate.getMonth() + 1);
+    } else if (dv === "y") {
+      allInRange.push({
+        year: currentDate.getFullYear(),
+      });
+      currentDate.setFullYear(currentDate.getFullYear() + 1);
+    }
+  }
+
+  const actualData = await userModel.aggregate([
+    {
+      // Lọc các user được tạo từ startDate
+      $match: {
+        createdAt: { $gte: startDate, $lte: now },
+      },
+    },
+
+    {
+      // Nhóm theo period
+      $group: {
+        _id: filterGroup,
+        count: { $sum: 1 },
+      },
+    },
+
+    // Sắp xếp theo thời gian
+    { $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 } },
+  ]);
+  const dataMap: { [key: string]: number } = {};
+  actualData.forEach((item) => {
+    let key = "";
+    if (dv === "d") {
+      key = `${item._id.year}-${item._id.month}-${item._id.day}`;
+    } else if (dv === "m") {
+      key = `${item._id.year}-${item._id.month}`;
+    } else if (dv === "y") {
+      key = `${item._id.year}`;
+    }
+    dataMap[key] = item.count;
+  });
+
+  // Tạo kết quả cuối cùng với đầy đủ các tháng
+  const result = allInRange.map((period) => {
+    let key = "";
+    if (dv === "d") {
+      key = `${period.year}-${period.month}-${period.day}`;
+    } else if (dv === "m") {
+      key = `${period.year}-${period.month}`;
+    } else if (dv === "y") {
+      key = `${period.year}`;
+    }
+    return {
+      _id: period,
+      count: dataMap[key] || 0, // Nếu không có dữ liệu, count = 0
+    };
+  });
+
+  return result;
+}
 export async function getNewUserAnalyst(step: number, num: number) {
   // Lấy ngày hiện tại
   // Lấy ngày hiện tại
+  let dv;
+  if (step === 1) {
+    dv = "d";
+  } else if (step === 7) {
+    dv = "w";
+  } else if (step === 30) {
+    dv = "m";
+  } else if (step === 365) {
+    dv = "y";
+  }
   const currentDate = new Date();
 
   // Tính ngày bắt đầu
@@ -274,6 +396,7 @@ export const userSrv = {
   updateTargetScore,
   getAllUsers,
   getUpgradeUsers,
+  getNewUserAnalyst_,
   getNewUserAnalyst,
   getUpgradeUserAnalyst,
   getUserProgressAnalyst,

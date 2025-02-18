@@ -9,7 +9,7 @@
     "dev": "cross-env APP_ENV=dev ENV_FILE=.env.dev ts-node-dev src/index.ts",
     "start:docker": "cross-env APP_ENV=docker ENV_FILE=.env node dist/index.js",
     "build": "tsc",
-    "build:docker": "docker build -t mars1836/server-toeic:latest . && docker push mars1836/server-toeic:latest"
+    "build:docker": "docker build -t mars1836/backend_toeic:latest . && docker push mars1836/backend_toeic:latest"
   },
   "jest": {
     "preset": "ts-jest",

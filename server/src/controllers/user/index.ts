@@ -57,7 +57,7 @@ async function getUpgradeUsers(req: Request, res: Response) {
 
 async function getNewUserAnalyst(req: Request, res: Response) {
   const { step, num } = req.query;
-  const data = await userSrv.getNewUserAnalyst(Number(step), Number(num));
+  const data = await userSrv.getNewUserAnalyst_(Number(step), Number(num));
   res.status(200).json(data);
 }
 async function getUpgradeUserAnalyst(req: Request, res: Response) {

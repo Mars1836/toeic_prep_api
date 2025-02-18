@@ -20,6 +20,12 @@ services:
     networks:
       - toeic_network
 
+  backup:
+    image: toeic-prep-backup
+    container_name: backup_toeic
+    restart: always
+    networks:
+      - toeic_network
   redis:
     image: redis:alpine
     ports:

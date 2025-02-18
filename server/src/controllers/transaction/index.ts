@@ -22,7 +22,7 @@ namespace TransactionCtrl {
   }
   export async function getNewTransactionAnalyst(req: Request, res: Response) {
     const { step, num } = req.query;
-    const stats = await TransactionSrv.getNewTransactionAnalyst(
+    const stats = await TransactionSrv.getNewTransactionAnalyst_(
       Number(step),
       Number(num)
     );
